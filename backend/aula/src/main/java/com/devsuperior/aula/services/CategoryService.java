@@ -5,6 +5,7 @@ import com.devsuperior.aula.entities.CategoryDTO;
 import com.devsuperior.aula.repositories.CategoryRepository;
 import com.devsuperior.aula.services.exceptions.EntityNotFoundException;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,4 +32,14 @@ public class CategoryService {
       Category category = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
       return new CategoryDTO(category);
     }
+
+    @Transactional
+    public CategoryDTO save(CategoryDTO categoryDTO) {
+        Category entity = new Category();
+        entity.setName(categoryDTO.getName());
+        entity = categoryRepository.save(entity);
+        return new CategoryDTO(entity);
+    }
+
+
 }
