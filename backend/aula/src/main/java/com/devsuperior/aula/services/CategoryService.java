@@ -3,6 +3,8 @@ package com.devsuperior.aula.services;
 import com.devsuperior.aula.entities.Category;
 import com.devsuperior.aula.entities.CategoryDTO;
 import com.devsuperior.aula.repositories.CategoryRepository;
+import com.devsuperior.aula.services.exceptions.EntityNotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
       Optional <Category> obj = categoryRepository.findById(id);
-      Category category = obj.get();
+      Category category = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
       return new CategoryDTO(category);
     }
 }
