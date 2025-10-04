@@ -4,8 +4,6 @@ import com.devsuperior.aula.entities.Category;
 import com.devsuperior.aula.entities.CategoryDTO;
 import com.devsuperior.aula.repositories.CategoryRepository;
 import com.devsuperior.aula.services.exceptions.EntityNotFoundException;
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +39,17 @@ public class CategoryService {
         return new CategoryDTO(entity);
     }
 
+    @Transactional
+    public CategoryDTO update(Long id,CategoryDTO dto) {
+        try{
+            Category entity = categoryRepository.getReferenceById(id);
+            entity.setName(dto.getName());
+            entity = categoryRepository.save(entity);
+            return new CategoryDTO(entity);
+        }catch(EntityNotFoundException e){
+            throw new EntityNotFoundException("Entity not found");
+        }
+
+    }
 
 }
